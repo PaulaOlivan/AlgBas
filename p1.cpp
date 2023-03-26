@@ -65,7 +65,8 @@ int inverso (int N, int w)
     return inverso;
 }
 
-// Función que calcula la clave publica del usuario.
+// Función que calcula la clave publica del usuario. La clave publica es el 
+// vector con los a_i
 // Entrada: N, w, mochila
 // Salida: vector con los componentes de la clave publica
 vector<int> clavePublica (int N, int w, vector<int> mochila)
@@ -83,60 +84,43 @@ vector<int> clavePublica (int N, int w, vector<int> mochila)
 }
 
 // Función que calcula el entero C que se transmite con el mensaje binario
+// Se debe calcular un C por cada CHAR del mensaje a transmitir
 // Entrada: vector con los componentes de la clave publica, mensaje a cifrar
 // Salida: entero C
-int calcularC (vector<int> clavePub, string msg)
+int calcularC (vector<int> clavePub, char letra)
 {
     int C = 0;
     
-    for (int i = 0; i < msg.size(); i++)
+    for (int i = 0; i < clavePub.size(); i++)
     {
-        C = C + (msg[i] * clavePub[i]);
+        // conseguimos el bit i-esimo del char letra
+        char bit = ((letra >> i) & 1) ? '1' : '0';
+        C = C + (bit * clavePub[i]);
     }
 
     return C;
 }
 
-// REVISAR
-// Función que cifra el array con el algoritmo de ElGamal
-// Entrada: N, w, mochila cumpliendo los requisitos de la práctica
-// Salida: vector con los componentes de cifrado
-vector<int> cifrarVector (int N, int w, vector<int> mochila)
+// Función que descifra el mensaje
+// Entrada: w, C, N
+// Salida: mensaje descifrado
+char letraDescifrada (int w, int C, int N) // Mirar como guardar la C en un vector
 {
-    vector<int> vecCifr;
+    int inversoW = inverso(N, w);
+    int M = (inversoW * C) % N;
 
-    int nMochila = mochila.size();
+    char letra = 0;
 
-    for (int i = 0; i < nMochila; i++)
+    for (int i = 0; i < 8; i++)
     {
-        vecCifr.push_back((mochila[i] * w) % N);
-    }
-
-    return vecCifr;
-}
-
-// REVISAR
-// Función que cifra el mensaje 
-// Entrada: vector con los componentes de cifrado, mensaje a cifrar
-// Salida: vector con los componentes cifrados del mensaje
-vector<int> cifrarMensaje (vector<int> vecCifr, string msg)
-{
-    vector<int> msgCifr;
-
-    int nVecCifr = vecCifr.size();
-
-    for (int i = 0; i < msg.size(); i++)
-    {
-        int charCifr = 0;
-        for (int j = 0; j < nVecCifr; j++)
+        if (M >= clavePub[i])
         {
-            charCifr = charCifr +  (msg[i] * vecCifr[j]);
-            msgCifr.push_back((msg[i] * vecCifr[i]));
+            letra = letra | (1 << i);
+            M = M - clavePub[i];
         }
-            
     }
 
-    return msgCifr;
+    return letra;
 }
 
 
@@ -175,9 +159,13 @@ int main (int argc, char *argv[]){
     }
 
     else {
-        vector<int>vecCifr  = cifrarVector (N, w, mochila);
-        vector<int>msgCifr = cifrarMensaje (vecCifr, msg);
-    }
+        // Para cifrar el mensaje se debe pasar letra a letra del string msg a
+        // enviar, de cada letra se calcula el entero C y se enviaría el vector.
 
-    
+        // Para descifrar el mensaje se debe calcular el inverso de w (mod N) y
+        // multiplicar el entero C recibido por el inverso de w (mod N).
+
+        // Una vez tenemos el vector de w^-1 * C, se debe calcular el mensaje 
+        // original, MIRAR COMO SE HACE EN EL PDF QUE ESTA CONFUSO
+    } 
 }
