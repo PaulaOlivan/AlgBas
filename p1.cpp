@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -36,7 +37,7 @@ bool esPrimo (int n)
 {
     bool esPrimo = true;
 
-    int sqrtN = int(sqrt(n)+1);
+    int sqrtN = int(sqrt(n) + 1);
 
     for (int i = 2; i < sqrtN; i++)
     {
@@ -87,38 +88,46 @@ vector<int> clavePublica (int N, int w, vector<int> mochila)
 // Se debe calcular un C por cada CHAR del mensaje a transmitir
 // Entrada: vector con los componentes de la clave publica, mensaje a cifrar
 // Salida: entero C
-int calcularC (vector<int> clavePub, char letra)
+vector<int> numeroC (vector<int> clavePub, string palabra)
 {
-    int C = 0;
-    
-    for (int i = 0; i < clavePub.size(); i++)
-    {
-        // conseguimos el bit i-esimo del char letra
-        char bit = ((letra >> i) & 1) ? '1' : '0';
-        C = C + (bit * clavePub[i]);
-    }
+    vector <int> C;
 
+    for (auto i = palabra.begin(); i != palabra.end(); i++) {
+        
+        // Recorremos cada char del string
+        int suma = 0;
+
+        for (int j = 0; j < clavePub.size(); j++) // Recorremos cada bit de la letra
+        {
+            // conseguimos el bit i-esimo del char letra
+            char bit = ((*i >> j) & 1) ? '1' : '0';
+            suma = suma + (bit * clavePub[j]);
+        }
+
+        C.push_back(suma); // Guardamos la suma de la letra iterada en el vector
+    }
     return C;
 }
 
 // Función que descifra el mensaje
-// Entrada: w, C, N
+// Entrada: clave privada (mochila), vector con el mensaje cifrado, w, N
 // Salida: mensaje descifrado
-char letraDescifrada (int w, int C, int N) // Mirar como guardar la C en un vector
+char letraDescifrada (vector<int> C, vector<int>mochila, int w, int N) // Mirar como guardar la C en un vector
 {
-    int inversoW = inverso(N, w);
-    int M = (inversoW * C) % N;
+    int inversoW = inverso(N, w); // Calculamos el inverso de w (mod N)
+    vector<int> C_descifrado; // Vector con los valores de C descifrados
 
-    char letra = 0;
-
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < C.size(); i++)
     {
-        if (M >= clavePub[i])
-        {
-            letra = letra | (1 << i);
-            M = M - clavePub[i];
-        }
+        C_descifrado.push_back((C[i] * inversoW)%N); //Obtenemos los valores de C descifrados, en el ejemplo (3, 31, 36)
     }
+
+    // Convertimos cada valor de C_descifrado en una cadena de bits que multiplicaremos por los elementos de la clave privada
+    // y sumaremos para obtener el valor de la letra descifrada
+    char letra = 0;
+    
+
+    // Con el valor de C descifrado y la clave privada (mochila) debemos conseguir el mensaje original
 
     return letra;
 }
