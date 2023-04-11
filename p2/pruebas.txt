@@ -1,0 +1,30 @@
+Prueba 1:
+    P = 4
+    n = 8
+Prueba 2:
+    P = 10
+    n = 500
+Prueba 3:
+    P = 8
+    n = 128
+Prueba 4:
+P = 500
+n = 150
+Prueba 5:
+P = 5
+n = 16
+Prueba 6:
+P = 3
+n = 2
+Prueba 7:
+P = 25
+n = 166777216
+Prueba 8:
+P = 
+n = 
+Prueba 9:
+P = 7
+n = 128   
+Prueba 10:
+P = 
+n = 
