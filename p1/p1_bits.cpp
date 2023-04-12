@@ -48,15 +48,90 @@ bool esPrimo (int n)
     return esPrimo;
 }
 
-string aBits (string mensaje){
-    string bits = "";
+// Función que calcula w^-1 (mod N) para poder realizar el descifrado del
+// calculado
+// Entrada: N, w
+// Salida: w^-1 (mod N)
+int inverso (int N, int w)
+{
+    int inverso = 0;
+    int i = 1;
+
+    while (inverso == 0)
+    {
+        if ((w * i) % N == 1)
+            inverso = i;
+        i++;
+    }
+
+    return inverso;
+}
+
+// Función que calcula la clave publica del usuario. La clave publica es el 
+// vector con los a_i
+// Entrada: N, w, mochila
+// Salida: vector con los componentes de la clave publica
+vector<int> clavePublica (int N, int w, vector<int> mochila)
+{
+    vector<int> clavePub;
+
+    int nMochila = mochila.size();
+
+    for (int i = 0; i < nMochila; i++)
+    {
+        clavePub.push_back((mochila[i] * w) % N);
+    }
+
+    return clavePub;
+}
+
+// Función que transforma un string en una cadena de bits
+// Entrada: string normal
+// Salida: vector de bits
+bitset<8> aBits (string mensaje){
+    bitset<8> bits;
     for (int i = 0; i < mensaje.size(); i++)
     {
-        bits += bitset<8>(mensaje[i]).to_string();
+        bits += bitset<8>(mensaje[i]); // Concatenar a los bits anteriores los nuevos bits del string
     }
     return bits;
 }
 
+// Función auxiliar que genera de manera global el conjunto de números C
+// Entrada: array que contendrá los valores de las sumas parciales, size que es
+// el tamaño de la mochila concatenada para ser semejante al tamaño del mensaje
+// bitmask es el mensaje que se quiere cifrar, bitmaskSize es el tamaño de la
+// máscara que debe ser igual al tamaño de la mochila concatenada
+void applyBitmask(int* arr, int size, const char* bitmask, int bitmaskSize) 
+{
+    // Recorre los elementos de 8 en 8
+    for (int i = 0; i < bitmaskSize; i++) 
+    {
+        char charMask = bitmask[i];
+        
+        for (int j = 0; j < 8; j++)
+        {
+            char bit = charMask & (1 << j); // Obtiene el bit j del charMask
+             
+            // Si la mascara es 0, se pone a 0 el elemento
+            if (bit == 0) 
+                arr[i*8 + j] = 0;
+        }
+    }
+}
+
+// Función que calcula el entero C que se transmite con el mensaje binario
+// Se debe calcular un C por cada conjunto de 
+// Entrada: vector con los componentes de la clave publica, mensaje a cifrar
+// Salida: entero C
+vector<int> numeroC (vector<int> clavePub, bitset<8> msgBits)
+{
+    // Llamar a la función que aplica la mascara a los bits
+
+    // Agrupar el resultado en bloques de tamaño de la mochila para obtener los distintos C
+
+    // Devolvemos el vector de elementos C
+}
 
 
 int main (int argc, char *argv[]){
@@ -78,21 +153,33 @@ int main (int argc, char *argv[]){
         cerr << "Por favor, intruduzca w y N t.q. 0 < w < N" << endl;
     }
 
-    if (!esPrimo(w)){
+    else if (!esPrimo(w)){
         cerr << "Por favor, intruduzca w t.q. w sea un número primo" << endl;
     }
 
-    if (!mochilaFacil(mochila, suma))
+    else if (!mochilaFacil(mochila, suma))
     {
         cerr << "La mochila debe ser facil (todo e en la mochila es mayor que la suma de las e previas)";
     }
 
-    if (suma > N)
+    else if (suma > N)
     {
         cerr << "Por favor, intruduzca N y los elementos de la mochila t.q. N > e_1 + e_2 + ... + e_n" << endl;
     }
 
-    else{
+    else {
+        std::bitset msgBits = aBits(msg); //Convertimos el mensaje a bits
+        // Como el mensaje debe tener una longitud multiplo del tamaño de la mochila añadimos 0 hasta tener un tamaño multiplo
+        while (msgBits.length() % mochila.size() != 0){
+            msgBits = msgBits + bitset<8>(0).to_string();
+        }
+        cout << "Debido a que el mensaje y la mochila pueden tener tamaños no compatibles se añadiran 0 a los bits del mensaje hasta que sean compatibles" << endl;
+        cout << "El mensaje final ha cifrar será el siguiente: " << msgBits.to_string() << endl;
 
+        // Ciframos ahora el mensaje calculando el número C de cada bloque del tamaño de la mochila
+        vector<int> numC;
+        for (int i = 0; i<mochila.size(); i++){
+            numC.push_back(calcularC())
+        }
     }
 }
