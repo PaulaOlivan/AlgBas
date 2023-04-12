@@ -85,27 +85,15 @@ vector<int> clavePublica (int N, int w, vector<int> mochila)
     return clavePub;
 }
 
-// Función que transforma un string en una cadena de bits
-// Entrada: string normal
-// Salida: vector de bits
-bitset<8> aBits (string mensaje){
-    bitset<8> bits;
-    for (int i = 0; i < mensaje.size(); i++)
-    {
-        bits += bitset<8>(mensaje[i]); // Concatenar a los bits anteriores los nuevos bits del string
-    }
-    return bits;
-}
-
 // Función auxiliar que genera de manera global el conjunto de números C
 // Entrada: array que contendrá los valores de las sumas parciales, size que es
 // el tamaño de la mochila concatenada para ser semejante al tamaño del mensaje
 // bitmask es el mensaje que se quiere cifrar, bitmaskSize es el tamaño de la
 // máscara que debe ser igual al tamaño de la mochila concatenada
-void applyBitmask(int* arr, int size, const char* bitmask, int bitmaskSize) 
+void applyBitmask(vector<int> arr, string bitmask) 
 {
     // Recorre los elementos de 8 en 8
-    for (int i = 0; i < bitmaskSize; i++) 
+    for (int i = 0; i < bitmask.size(); i++) 
     {
         char charMask = bitmask[i];
         
@@ -120,19 +108,46 @@ void applyBitmask(int* arr, int size, const char* bitmask, int bitmaskSize)
     }
 }
 
-// Función que calcula el entero C que se transmite con el mensaje binario
-// Se debe calcular un C por cada conjunto de 
-// Entrada: vector con los componentes de la clave publica, mensaje a cifrar
-// Salida: entero C
-vector<int> numeroC (vector<int> clavePub, bitset<8> msgBits)
+
+vector<int> cifrar (vector<int> clavePub, string msj)
 {
+    vector<int> clavePub_extendida;
+
+    // Extender la clave publica para que tenga el mismo tamaño que el mensaje
+    while (clavePub_extendida.size() < msj.size()*8)
+    {
+        clavePub_extendida.insert(clavePub_extendida.end(), clavePub.begin(), clavePub.end());
+    }
+
+    // Si la clave publica extendida es mayor que el mensaje, se elimina el exceso
+    while (clavePub_extendida.size() > msj.size()*8)
+    {
+        clavePub_extendida.pop_back();
+    }
+
     // Llamar a la función que aplica la mascara a los bits
+    applyBitmask(clavePub_extendida, msj);
+
+    vector<int> mensaje_cifrado;
 
     // Agrupar el resultado en bloques de tamaño de la mochila para obtener los distintos C
+    
+    int nElem = clavePub_extendida.size()/clavePub.size();
+    for (int i = 0; i < nElem; i++)
+    {
+        // Sumar los elementos de la mochila
+        int suma = 0;
+        for (int j = 0; j < clavePub.size(); j++)
+        {
+            suma += clavePub[j];
+        }
+
+        mensaje_cifrado.push_back(suma);
+    }
 
     // Devolvemos el vector de elementos C
+    return mensaje_cifrado;
 }
-
 
 int main (int argc, char *argv[]){
 
@@ -168,6 +183,7 @@ int main (int argc, char *argv[]){
     }
 
     else {
+        /*
         std::bitset msgBits = aBits(msg); //Convertimos el mensaje a bits
         // Como el mensaje debe tener una longitud multiplo del tamaño de la mochila añadimos 0 hasta tener un tamaño multiplo
         while (msgBits.length() % mochila.size() != 0){
@@ -180,6 +196,19 @@ int main (int argc, char *argv[]){
         vector<int> numC;
         for (int i = 0; i<mochila.size(); i++){
             numC.push_back(calcularC())
+        }*/
+
+        // Calculamos la clave publica
+        vector<int> clavePub = clavePublica(N, w, mochila);
+
+        // Ciframos el mensaje
+        vector<int> mensaje_cifrado = cifrar(clavePub, msg);
+
+        // Mostramos el mensaje cifrado
+        cout << "El mensaje cifrado es: " << endl;
+        for (int i = 0; i < mensaje_cifrado.size(); i++)
+        {
+            cout << mensaje_cifrado[i] << " ";
         }
     }
 }
