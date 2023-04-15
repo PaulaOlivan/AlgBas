@@ -90,17 +90,18 @@ vector<int> clavePublica (int N, int w, vector<int> mochila)
 // el tamaño de la mochila concatenada para ser semejante al tamaño del mensaje
 // bitmask es el mensaje que se quiere cifrar, bitmaskSize es el tamaño de la
 // máscara que debe ser igual al tamaño de la mochila concatenada
-void applyBitmask(vector<int> arr, string bitmask) 
+void applyBitmask(vector<int> &arr, string bitmask) 
 {
     // Recorre los elementos de 8 en 8
     for (int i = 0; i < bitmask.size(); i++) 
     {
         char charMask = bitmask[i];
-        
+
         for (int j = 0; j < 8; j++)
         {
-            char bit = charMask & (1 << j); // Obtiene el bit j del charMask
-             
+            int exponente = (128 >> j);
+            char bit = charMask & exponente; // Obtiene el bit j del charMask
+            
             // Si la mascara es 0, se pone a 0 el elemento
             if (bit == 0) 
                 arr[i*8 + j] = 0;
@@ -129,9 +130,8 @@ vector<int> cifrar (vector<int> clavePub, string msj)
     applyBitmask(clavePub_extendida, msj);
 
     vector<int> mensaje_cifrado;
-
-    // Agrupar el resultado en bloques de tamaño de la mochila para obtener los distintos C
     
+    // Agrupar el resultado en bloques de tamaño de la mochila para obtener los distintos C
     int nElem = clavePub_extendida.size()/clavePub.size();
     for (int i = 0; i < nElem; i++)
     {
@@ -139,7 +139,7 @@ vector<int> cifrar (vector<int> clavePub, string msj)
         int suma = 0;
         for (int j = 0; j < clavePub.size(); j++)
         {
-            suma += clavePub[j];
+            suma += clavePub_extendida[i*clavePub.size()+j];
         }
 
         mensaje_cifrado.push_back(suma);
@@ -149,40 +149,132 @@ vector<int> cifrar (vector<int> clavePub, string msj)
     return mensaje_cifrado;
 }
 
+
+unsigned char descifrarBloque(vector<int> clavePriv, int numC)
+{
+    unsigned char bloque = 0;
+    
+    for (int i=(clavePriv.size()-1); i >= 0; i--){
+        
+        bloque >>= 1;  // Añade espacio para el bit a la izquierda
+
+        if (clavePriv[i] <= numC){
+            numC = numC - clavePriv[i];
+            bloque += 128;     // Añade un 1 a la izquierda
+        }        
+    }
+
+    bloque >>= clavePriv.size();    // Mueve el bloque a la derecha
+
+    return bloque;
+}
+
+void printCharBits(unsigned char ch)
+{    
+    for (int k = 0; k < 8; k++)
+    {   
+        unsigned char bit = 0;
+
+        if (ch >> 7) // Ultimo bit
+            bit = 1;
+
+        ch <<= 1;
+        cout << int(bit);
+    }
+}
+
+vector<char> descifrado (int N, int w, vector<int> msgCifrado, vector<int> clavePriv){
+    int w_inv = inverso(N, w);
+    vector<char> msgOriginal;
+    for (auto &valor : msgCifrado){
+        valor = (valor * w_inv) % N;
+    }
+
+    int nBloques = 8/clavePriv.size();
+    int nChars = msgCifrado.size()/nBloques;
+
+    // Aplicamos la mochila, clave privada
+    for (int i=0; i < nChars; i++){
+        
+        unsigned char nDescifrado = 0;
+        
+        for (int j=0; j < nBloques; j++)
+        {
+            int posicion = i*nBloques + j;
+            int numC = msgCifrado[posicion];
+
+            unsigned char bloque = descifrarBloque(clavePriv, numC);
+
+            // Añade espacio para el bloque en el caracter descifrado
+            nDescifrado <<= clavePriv.size();   
+            nDescifrado += bloque;
+        }
+
+        msgOriginal.push_back(nDescifrado);
+    }
+
+    return msgOriginal;
+}
+
 int main (int argc, char *argv[]){
 
     int N = stoi(argv[1]);
     int w = stoi(argv[2]);
-    int suma;                   // Suma de los elementos de la mochila
-    string msg = "HAY";         // Mensaje a cifrar VER COMO HACERLO EN LOS ARGUMENTOS
 
+    /*int N = 85;
+    int w = 11;*/
+
+    int suma;                   // Suma de los elementos de la mochila
+
+    /*string msg = "HAY"; */        // Mensaje a cifrar VER COMO HACERLO EN LOS ARGUMENTOS
+    string msg = argv[3];
     vector<int> mochila;
 
-    for (int i = 3; i < argc; i++)  // Recoge la clave privada
+    for (int i = 4; i < argc; i++)  // Recoge la clave privada
     {
         mochila.push_back(stoi(argv[i]));
     }
 
-    if (w  < 0 || N < w)
+    /*mochila.push_back(1);
+    mochila.push_back(15);
+    mochila.push_back(20);
+    mochila.push_back(45);*/
+    
+    int resto = mochila.size() % 8;
+    if (resto != 0){
+        cerr << "La mochila debe tener un tamaño múltiplo de 8 debido a que se van a cifrar carácteres" << endl;
+    }
+
+    else if (w  < 0 || N < w)
     {
         cerr << "Por favor, intruduzca w y N t.q. 0 < w < N" << endl;
     }
-
     else if (!esPrimo(w)){
         cerr << "Por favor, intruduzca w t.q. w sea un número primo" << endl;
     }
-
     else if (!mochilaFacil(mochila, suma))
     {
         cerr << "La mochila debe ser facil (todo e en la mochila es mayor que la suma de las e previas)";
     }
-
     else if (suma > N)
     {
         cerr << "Por favor, intruduzca N y los elementos de la mochila t.q. N > e_1 + e_2 + ... + e_n" << endl;
     }
 
+
     else {
+
+        cout << "El mensaje a cifrar es: " << msg << endl;
+        cout << "El número N escogido es: " << N << endl;
+        cout << "El número w escogido es: " << w << endl;
+        cout << "La mochila escogida como clave privada es: ";
+        vector<int> mochilaCopia(mochila);
+        
+        for (int i=0; i<mochila.size(); i++){
+            int elem = mochilaCopia[i];
+            cout << elem << " ";
+        }
+
         /*
         std::bitset msgBits = aBits(msg); //Convertimos el mensaje a bits
         // Como el mensaje debe tener una longitud multiplo del tamaño de la mochila añadimos 0 hasta tener un tamaño multiplo
@@ -201,14 +293,27 @@ int main (int argc, char *argv[]){
         // Calculamos la clave publica
         vector<int> clavePub = clavePublica(N, w, mochila);
 
+        cout << endl << "Clave publica: ";
+        for (auto elem : clavePub)
+        {
+            cout << elem << " ";
+        }
         // Ciframos el mensaje
         vector<int> mensaje_cifrado = cifrar(clavePub, msg);
 
         // Mostramos el mensaje cifrado
-        cout << "El mensaje cifrado es: " << endl;
+        cout << endl <<"El mensaje cifrado es: ";
+
         for (int i = 0; i < mensaje_cifrado.size(); i++)
         {
             cout << mensaje_cifrado[i] << " ";
         }
+
+        vector<char>origen = descifrado(N, w, mensaje_cifrado, mochila);
+        cout << endl << "El mensaje original es: ";
+        for (int i=0; i<origen.size(); i++){
+            cout << origen[i] << " ";
+        }
+        cout << endl;
     }
 }
