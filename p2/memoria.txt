@@ -1,0 +1,72 @@
+    ----------- Lanzamiento -----------
+    
+    El test se ejecuta como "python3 p2.py profundidad i_bola usar_fb"
+    Siendo:
+        profundidad: Profundidad total del arbol en el que se deja caer la bola, empezando en 1
+        i_bola:      Índice de la bola que se deja caer, empezando en 1 (ej: bola número 50)
+        usar_fb:     Si usar (o no) el algoritmo de fuerza bruta. 0/1 (no/si)
+
+
+    Dado que hendrix no tiene ni numba ni numpy, se ha comentado la implementación en GPU y la compilación del algoritmo de CPU.
+    Se ejecuta el algoritmo de fuerza bruta y el algoritmo iterativo de CPU directamente sobre python.  
+
+
+
+    ----------- Rendimiento -----------
+    
+    Los tests se han hecho el camino de la bola numero 10 a la profundidad dada, el tiempo en segundos
+    Se han ejecutado los tests en un ryzen 7 5700x con 32gb de ram y una rtx 4080
+
+    Profundidad     CPU         GPU         Arbol
+    10              1e-5        1.5e-1      5e-4
+    20              1.2e-5      1.5e-1      2.7
+    21              1.3e-5      1.5e-1      5.7
+    22              1.3e-5      1.5e-1      12
+
+    1e+3            1e-4        1.5e-1      -
+    1e+4            1e-3        1.5e-1      -
+    1e+5            3e-2        1.5e-1      -
+    1e+6            1.2         1.5e-1      -
+
+    1e+9            3           3e-1        -
+    5e+9            10          9e-1        -
+    1e+10           17          1.6         -
+    1.6e+10         28          2.6         -
+    
+
+    El primer y segundo juego de pruebas se han realizado en código python
+    El tercer juego de pruebas se ha realizado compilando el algoritmo de CPU con numba
+
+
+    Se aprecia claramente que el algoritmo de fuerza bruta crece en 2^p
+    El algoritmo divide y vencerás es lineal en p, como se puede apreciar en los tiempos
+    Cada vez que la profundidad se multiplica por 10, el tiempo también lo hace 
+
+    La implementación de CPU es más rápida en profundidades pequeñas,
+    debido al coste constante añadido de la comunicación con la GPU (el pci express es lento)
+    Para p grandes la GPU supera a la CPU, aunque el valor exacto es dificil de calcular
+    debido a los costes añadidos de la compilación de numba (1.4s cte)
+    
+    Gracias a la compilación el coste aumenta linealmente, pero con una constante menor a 1.
+    Concretamente, al aumentar x10 la profundidad el tiempo aumenta x5.8 en media
+    En la GPU, aumentar x10 la p aumenta el tiempo en x5.6
+
+    
+    En conclusión, todas las implementaciones del algoritmo divide y vencerás escalan claramente de forma lineal.
+    La compilación reduce el factor de escala en 1.6, y la GPU reduce el tiempo base entre 10, pero todas escalan linealmente. 
+
+
+
+    ----------- Corrección -----------
+
+    Para garantizar la corrección se ha comparado los caminos resultantes de las tres implementaciones.
+    Dado que el algoritmo de FB genera el árbol completo, a nivel algorítmico no puede tener error.
+    A nivel de código, se ha depurado comparándolo con resoluciones pequeñas hechas a mano.
+
+    En todas las pruebas hechas todos los algoritmos han devuelto el mismo resultado que el de fuerza bruta.
+
+
+
+
+
+
