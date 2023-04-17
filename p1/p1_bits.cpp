@@ -164,7 +164,7 @@ unsigned char descifrarBloque(vector<int> clavePriv, int numC)
         }        
     }
 
-    bloque >>= clavePriv.size();    // Mueve el bloque a la derecha
+    bloque >>= (8-clavePriv.size());    // Mueve el bloque a la derecha
 
     return bloque;
 }
@@ -186,12 +186,17 @@ void printCharBits(unsigned char ch)
 vector<char> descifrado (int N, int w, vector<int> msgCifrado, vector<int> clavePriv){
     int w_inv = inverso(N, w);
     vector<char> msgOriginal;
-    for (auto &valor : msgCifrado){
+    cout << endl << "El primer paso del descifrado da: ";
+    for (int &valor : msgCifrado){
         valor = (valor * w_inv) % N;
+        cout << to_string(valor) + " ";
     }
+    cout << endl;
 
     int nBloques = 8/clavePriv.size();
+    cout << endl << "El numero de bloques es: " << nBloques << endl;
     int nChars = msgCifrado.size()/nBloques;
+    cout << endl << "El numero de caracteres es: " << nChars << endl;
 
     // Aplicamos la mochila, clave privada
     for (int i=0; i < nChars; i++){
@@ -221,13 +226,11 @@ int main (int argc, char *argv[]){
     int N = stoi(argv[1]);
     int w = stoi(argv[2]);
 
-    /*int N = 85;
-    int w = 11;*/
+    // Suma de los elementos de la mochila
+    int suma;                   
 
-    int suma;                   // Suma de los elementos de la mochila
-
-    /*string msg = "HAY"; */        // Mensaje a cifrar VER COMO HACERLO EN LOS ARGUMENTOS
     string msg = argv[3];
+
     vector<int> mochila;
 
     for (int i = 4; i < argc; i++)  // Recoge la clave privada
@@ -235,14 +238,10 @@ int main (int argc, char *argv[]){
         mochila.push_back(stoi(argv[i]));
     }
 
-    /*mochila.push_back(1);
-    mochila.push_back(15);
-    mochila.push_back(20);
-    mochila.push_back(45);*/
     
-    int resto = mochila.size() % 8;
+    float resto = 8 % mochila.size();
     if (resto != 0){
-        cerr << "La mochila debe tener un tamaño múltiplo de 8 debido a que se van a cifrar carácteres" << endl;
+        cerr << "La mochila debe tener un tamaño divisor de 8 debido a que se van a cifrar carácteres" << endl;
     }
 
     else if (w  < 0 || N < w)
@@ -274,21 +273,7 @@ int main (int argc, char *argv[]){
             int elem = mochilaCopia[i];
             cout << elem << " ";
         }
-
-        /*
-        std::bitset msgBits = aBits(msg); //Convertimos el mensaje a bits
-        // Como el mensaje debe tener una longitud multiplo del tamaño de la mochila añadimos 0 hasta tener un tamaño multiplo
-        while (msgBits.length() % mochila.size() != 0){
-            msgBits = msgBits + bitset<8>(0).to_string();
-        }
-        cout << "Debido a que el mensaje y la mochila pueden tener tamaños no compatibles se añadiran 0 a los bits del mensaje hasta que sean compatibles" << endl;
-        cout << "El mensaje final ha cifrar será el siguiente: " << msgBits.to_string() << endl;
-
-        // Ciframos ahora el mensaje calculando el número C de cada bloque del tamaño de la mochila
-        vector<int> numC;
-        for (int i = 0; i<mochila.size(); i++){
-            numC.push_back(calcularC())
-        }*/
+        cout << endl;
 
         // Calculamos la clave publica
         vector<int> clavePub = clavePublica(N, w, mochila);
@@ -308,11 +293,12 @@ int main (int argc, char *argv[]){
         {
             cout << mensaje_cifrado[i] << " ";
         }
+        cout << endl;
 
         vector<char>origen = descifrado(N, w, mensaje_cifrado, mochila);
         cout << endl << "El mensaje original es: ";
         for (int i=0; i<origen.size(); i++){
-            cout << origen[i] << " ";
+            cout << origen[i];
         }
         cout << endl;
     }
