@@ -2,13 +2,49 @@ import sys
 import time
 
 word_set = set()  # create an empty hash set
-nombre = sys.argv[1]
+nombre = "/home/hsunekichi/Escritorio/algBas/p3/dicc100" #sys.argv[1]
 
 with open(nombre+".txt", "r") as f:
     for line in f:
         word = line.strip().lower()  # remove leading/trailing whitespaces and newline characters
         word_set.add(word)   # add word to the hash set
 
+
+def flatten(lst):
+    """
+    Flatten a list of lists recursively.
+    
+    Args:
+    - lst (list): List of lists to be flattened.
+    
+    Returns:
+    - list: Flattened list.
+    """
+    flattened = []
+    for item in lst:
+        if isinstance(item, list):
+            flattened.extend(flatten(item))  # Recursively flatten inner lists
+        else:
+            flattened.append(item)
+    return flattened
+
+def serialize(lst):
+    """
+    Serialize a list of lists recursively.
+    
+    Args:
+    - lst (list): List of lists to be serialized.
+    
+    Returns:
+    - list: Serialized list.
+    """
+    serialized = []
+    for item in lst:
+        if isinstance(item, list):
+            serialized.extend(serialize(item))  # Recursively serialize inner lists
+        else:
+            serialized.append(item)
+    return serialized
 
 
 #Función que devuelve verdad si y solo si palabra existe en el word set creado
@@ -61,9 +97,12 @@ def separarPalabras(input, init = 0):
 
 
 init = time.time_ns() 
-input = input()
+#input = input()
+input = "migala"
 input = input.lower()
 out = separarPalabras(input)
 end = time.time_ns()
 print("Exec time: ", (end-init)/1000000000, "s")
-#print(out)
+print(out)
+print(serialize(out))
+print(flatten(out))
