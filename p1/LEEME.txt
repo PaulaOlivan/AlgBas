@@ -1,0 +1,17 @@
+Mateo Trejo, Hugo	816678@unizar.es	login en hendrix
+
+Oliván Usieto, Paula	771938@unizar.es	login en hendrix
+
+El programa está organizado en un único fichero que contiene todas las funciones necesarias para cifrar y descifrar una cadena de carácteres.
+Para poder realizar esto debe recibir los siguientes parámetros en la invocación del programa:
+	- Un número N que forma parte de la clave privada y debe ser mayor que la suma de todos los elementos de la mochila privada.
+	- Un número w que debe ser un número primo y debe ser mayor que 0 y menor que N.
+	- Una cadena de caracteres que será la cadena a cifrar o descifrar.
+	- La mochila privada del usuario, esta debe ser un conjunto de 2, 4 u 8 números y cada uno será un parámetros de la función.
+
+Con todos estos parámetros se puede utilizar el programa con los siguientes comandos:
+	- g++ -std=c++11 -o p1 p1.cpp
+	- ./p1 N w cadena e_1 ... e_n
+Siendo e_i los distintos elementos de la mochila privada, donde n será 2, 4 u 8 dependiendo de la mochila privada.
+
+En caso de no introducir correctamente los parámetros del programa, este mostrará un mensaje de error y se deberá volver a lanzar el programa.
