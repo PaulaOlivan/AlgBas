@@ -1,0 +1,11 @@
+Creado por Hugo Mateo (816678) & Paula Oliván (771938)
+Fichero de pruebas para el programa de Divide y Venceras con formato Profundidad BolasLanzadas
+4 8
+10 500
+8 128
+3 2
+5 16
+7 128
+500 150
+25 166777216
+10000 100000000

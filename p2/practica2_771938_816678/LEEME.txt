@@ -1,0 +1,28 @@
+Mateo Trejo, Hugo	816678@unizar.es	login en hendrix
+
+Oliván Usieto, Paula	771938@unizar.es	login en hendrix
+
+El programa está organizado en un único fichero que contiene todas las funciones necesarias para realizar las pruebas necesarias en la comparación
+de un algoritmo de creación de árboles binarios y la caída de x número de bolas en el mismo haciendo que caiga en un nodo dependiendo de cuantas
+bolas hayan caído anteriormente ya que la dirección cambia de derecha a izquierda cada vez que una bola pasa por el nodo. También cuenta con un
+algoritmo que permite saber en que hoja del árbol caerá la bola número x sin necesarias de crear todo el árbol binario.
+Para poder hacer estas pruebas es necesario invocar al programa en Python con dos argumentos, ambos ficheros de texto, uno con los datos de
+entrada (pruebas.txt) y otra con los datos de salida (resultados.txt). El fichero de entrada cuenta con varias líneas con dos números cada una con 
+el siguiente formato, ambos serán tratados como enteros:
+    profundidadDelÁrbol NúmeroDeBolasLanzadas
+El fichero de salida almacenará la profundidas de la prueba junto con la bola lanzada y los tiempos de ejecución de cada algoritmo, quedando así:
+    Profundidad BolasLanzadas Fuerza_Bruta Divide_Vencerás
+          |          |            |            |
+          |          |            |            |
+
+Por tanto,para poder hacer las pruebas nombradas, una vez creado el fichero de pruebas y el de resultados se podrá ejecutar con estos comandos:
+    - python3 p2.py pruebas.txt resultados.txt
+
+En caso de no introducir ambos ficheros de texto como parámetros el programa mostrará un mensaje de error y se cerrará. En caso de no cumplir la
+sintaxis de los ficheros de entrada el programa podrá tener comportamientos inesperados.
+Debido a que la implementación de fuerza bruta debe general todo el árbol binario para calcular donde caerá la i-ésima bola, a partir del nivel 22
+únicamente se realizará con el algoritmo de divide y vencerás ya que el tiempo de ejecución de fuerza bruta es demasiado elevado y dependiendo de
+la profundidad marcada también puede llegar a superar el límite de memoria asignada para el programa.
+En caso de querer repetir las pruebas solo es necesario volver a lanzar el programa y si se considera necesario cambiar las pruebas, ya que el
+fichero de resultados se sobreescribe cada vez que se ejecuta el programa.
+    
