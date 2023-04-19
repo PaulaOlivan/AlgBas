@@ -15,7 +15,7 @@ if [ $# -eq 0 ]; then
     # Probamos el programa con los datos de prueba con mochila de tamaño 2
     echo "Probamos con una mochila de tamaño 2"
     #./p1 85 11 "Este mensaje no podrá ser descifrado" 15 20
-    #./p1 85 11 "Buenos días Mario, ¿qué tal ayer la pesca?" 20 45
+    ./p1 85 11 "Buenos días Mario, ¿qué tal ayer la pesca?" 20 45
     # Probamos el programa con los datos de prueba con mochila de tamaño 4
     echo "Ahora probamos con una mochila de tamaño 4"
     #./p1 85 11 "Continuamos haciendo pruebas aumentando la mochila" 1 15 20 45
@@ -23,5 +23,5 @@ if [ $# -eq 0 ]; then
     # Probamos el programa con los datos de prueba con mochila de tamaño 8
     echo "Ahora probamos con una mochila de tamaño 8"
     #./p1 1500 11 "Empezamos las pruebas con el máximo tamaño de la mochila" 1 15 20 45 85 170 340 700
-    ./p1 1500 11 "Esta es la última prueba del script, ¿irá todo bien?" 1 15 20 45 85 170 340 700
+    #./p1 1500 11 "Esta es la última prueba del script, ¿irá todo bien?" 1 15 20 45 85 170 340 700
 fi
