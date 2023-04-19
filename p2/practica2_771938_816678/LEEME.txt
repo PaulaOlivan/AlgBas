@@ -25,4 +25,10 @@ Debido a que la implementación de fuerza bruta debe general todo el árbol bina
 la profundidad marcada también puede llegar a superar el límite de memoria asignada para el programa.
 En caso de querer repetir las pruebas solo es necesario volver a lanzar el programa y si se considera necesario cambiar las pruebas, ya que el
 fichero de resultados se sobreescribe cada vez que se ejecuta el programa.
+
+Como se puede observar en la carpeta hay un fichero llamado p2_pgu.py que contiene el código de la práctica adaptado para poder ser lanzado en gpu,
+los comandos necesarios para poder probar esta versión son:
+    - lfhafhñoaehfaihefea
+No hace uso de parámetros de invocación ya que deben ser cambiados dentro del fichero del programa, el lanzamiento con el script de bash está
+comentado para solo ser lanzado cuando se considere necesario y/o se quiera probar.
     
