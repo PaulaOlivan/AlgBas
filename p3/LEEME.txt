@@ -1,0 +1,16 @@
+Mateo Trejo, Hugo	816678@unizar.es	login en hendrix
+
+Oliván Usieto, Paula	771938@unizar.es	login en hendrix
+
+El programa está organizado en un único fichero que contiene todas las funciones necesarias para realizar la separación de una concatenación
+de palabras que esten incluidas en un archivo llamado diccXXX.txt, donde XXX es el numero de palabras que contiene el diccionario.
+
+Para poder hacer estas pruebas es necesario invocar al programa en Python con los siguientes argumentos:
+    - nombre del fichero a usar como diccionario, no debe incluirse el .txt
+    - tamaño de las concatenaciones que se quieren realizar
+    - número de combinaciones que se quieren realizar con las palabras del diccionario
+
+Por tanto,para poder hacer las pruebas nombradas, una vez creado el fichero de pruebas y el de resultados se podrá ejecutar con estos comandos:
+    - python3 combinar.py dicXXX tamaño nCombicaciones
+
+En caso de no introducir los parametros en el orden adecuado o no introducirlos todos, el programa no funcionará como se espera.
