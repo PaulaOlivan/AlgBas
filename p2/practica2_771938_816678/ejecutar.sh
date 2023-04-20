@@ -6,6 +6,7 @@
 
 # Agregar permisos de ejecución al archivo p1
 chmod +x p2.py
+chmod +x p2_gpu.py
 
 # Ejecutar el programa si no se proporcionan argumentos al script
 if [ $# -eq 0 ]; then
