@@ -73,12 +73,15 @@ if len(sys.argv) != 3:
 # Leemos linea a linea el archivo de entrada que contiene la profundidad y las bolas a colocar
 with open('pruebas.txt', 'r') as file_in:
     with open('resultados.txt', 'w') as file_out:
-        # Ignoramos las dos primeras lineas del archivo de entrada que forman la cabecera
-        lines = file_in.readlines()[2:]
+         # Leer todas las líneas del archivo de entrada
+        lines = file_in.readlines()
+        # Eliminar las dos primeras líneas de la lista
+        lines = lines[2:]
+
         # Ecribimos la linea de cabecera
         file_out.write("PosicionBolasLanzadas\tFuerzaBruta\tDivideYVenceras\tGPU")
 
-        for line in file_in:
+        for line in lines:
             prof, bol, *resto = line.split() # separar la línea en palabras
             profundidad = int(prof) # convertir el primer número en entero
             bolas = int(bol) # convertir el segundo número en entero
@@ -105,6 +108,7 @@ with open('pruebas.txt', 'r') as file_in:
             # Comprobamos si el resultado es correcto
             if camino_cpu == camino_fb:
                 print("Los caminos son iguales")
+                print ("Camino:", camino_cpu)
             else:
                 print("Los caminos son diferentes")
                 print("Camino CPU:", camino_cpu)
