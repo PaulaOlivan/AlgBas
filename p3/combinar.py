@@ -33,6 +33,9 @@ n_comb = int(sys.argv[3])
 resultado = generar_strings(word_set, size, n_comb)
 combinacion = "".join(resultado)  # unimos las palabras seleccionadas con un espacio
 
+#for i in range(15):
+    #combinacion = "migala"+combinacion
+
 # Open the file for writing
 with open('lista.txt', 'w') as f:
     # Write some data to the file
