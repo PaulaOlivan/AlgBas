@@ -11,9 +11,9 @@ entrada (pruebas.txt) y otra con los datos de salida (resultados.txt). El ficher
 el siguiente formato, ambos serán tratados como enteros:
     profundidadDelÁrbol NúmeroDeBolasLanzadas
 El fichero de salida almacenará la profundidas de la prueba junto con la bola lanzada y los tiempos de ejecución de cada algoritmo, quedando así:
-    Profundidad BolasLanzadas Fuerza_Bruta Divide_Vencerás
-          |          |            |            |
-          |          |            |            |
+    PosicionBolasLanzadas Fuerza_Bruta Divide_Vencerás
+          |                     |            |
+          |                     |            |
 
 Por tanto,para poder hacer las pruebas nombradas, una vez creado el fichero de pruebas y el de resultados se podrá ejecutar con estos comandos:
     - python3 p2.py pruebas.txt resultados.txt
@@ -27,8 +27,8 @@ En caso de querer repetir las pruebas solo es necesario volver a lanzar el progr
 fichero de resultados se sobreescribe cada vez que se ejecuta el programa.
 
 Como se puede observar en la carpeta hay un fichero llamado p2_pgu.py que contiene el código de la práctica adaptado para poder ser lanzado en gpu,
-los comandos necesarios para poder probar esta versión son:
-    - lfhafhñoaehfaihefea
+para poder lanzar esta versión es necesario descomentar las librerias comentadas y las líneas de código comentadas en las últimas líneas de p2.py
+
 No hace uso de parámetros de invocación ya que deben ser cambiados dentro del fichero del programa, el lanzamiento con el script de bash está
 comentado para solo ser lanzado cuando se considere necesario y/o se quiera probar.
     
