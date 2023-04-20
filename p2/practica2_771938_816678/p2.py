@@ -6,6 +6,9 @@ import sys
 
 # Argumentos: p2.py profundidad(int) i_bola(int) usar_fuerza_bruta(0/1)
 #@numba.jit(nopython=False, cache=True)
+
+# Función que calcula el camino que debe seguir la bola i_bola para llegar 
+# a la hoja que le corresponda en la profundidad p utilizando Divide y Venceras
 def dondeEstaLaBolita (profundidad, i_bolita):
     
     camino = [0]*(profundidad - 1)
@@ -21,7 +24,7 @@ def dondeEstaLaBolita (profundidad, i_bolita):
 
     return camino
 
-
+# Clase que representa un nodo del árbol binario
 class Nodo:
     def __init__(self, posicion = 1, direccion = 0):
         self.direccion = direccion
@@ -29,6 +32,7 @@ class Nodo:
         self.left = None
         self.right = None
 
+# Función que crea un árbol binario completo de profundidad p
 def create_complete_tree(p, initDir=0, posicion=1):
     if p == 0:
         return None
@@ -37,6 +41,8 @@ def create_complete_tree(p, initDir=0, posicion=1):
     root.right = create_complete_tree(p-1, initDir, (posicion*2)+1)
     return root
 
+# Función que calcula el camino que debe seguir la bola i_bola para llegar
+# a la hoja que le corresponda en la profundidad p utilizando Fuerza Bruta
 def colocarBolas (nBolas, nodo, n_bola):
     for i in range(1, nBolas+1):
         camino = bolasFB (i, nodo)
@@ -44,6 +50,7 @@ def colocarBolas (nBolas, nodo, n_bola):
         if i == n_bola:
             return camino
 
+# Función que devuelve el camino que debe seguir la bola i para llegar
 def bolasFB (i, nodo):
     if nodo.left == None: # Estoy en el caso base, he llegado a la hoja
         return []
@@ -95,6 +102,7 @@ with open('pruebas.txt', 'r') as file_in:
             finFB = time.time()
             print ("Tiempo de ejecucion del metodo de fuerza bruta:", (finFB-init))
             
+            # Comprobamos si el resultado es correcto
             if camino_cpu == camino_fb:
                 print("Los caminos son iguales")
             else:
