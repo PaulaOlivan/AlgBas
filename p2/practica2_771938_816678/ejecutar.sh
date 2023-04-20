@@ -5,12 +5,12 @@
 #!/bin/bash
 
 # Agregar permisos de ejecución al archivo p1
-chmod +x p1
+chmod +x p2.py
 
 # Ejecutar el programa si no se proporcionan argumentos al script
 if [ $# -eq 0 ]; then
     # Probamos el programa con los datos de prueba
     echo "Lanzamos el programa para probar los datos de pruebas.txt"
-    ./python3 p2.py pruebas.txt resultados.txt 
+    python3 p2.py pruebas.txt resultados.txt 
 
 fi
