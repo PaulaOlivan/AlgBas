@@ -9,3 +9,5 @@ Fichero de pruebas para el programa de Divide y Venceras con formato Profundidad
 15 80
 20 100
 18 100
+15 1
+18 1

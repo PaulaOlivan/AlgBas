@@ -1,0 +1,22 @@
+Mateo Trejo, Hugo	816678@unizar.es	login en hendrix
+
+Oliván Usieto, Paula	771938@unizar.es	login en hendrix
+
+El programa recibe una serie de parámetros de configuración, y recibe por entrada estándar la frase a separar.
+
+Los argumentos son:
+    - nombre del fichero a usar como diccionario, no debe incluirse el .txt
+    - Si debe usarse el algoritmo con memoria o no (1/0)
+    - Si debe comprobarse la solución con el resultado correcto generado por combinar.py (1/0)
+    - Si deben imprimirse las secuencias recibidas y generadas (1/0)
+
+Para generar secuencias aleatorias puede usarse otro programa:
+    - python3 combinar.py dicXXX nPalabras mutarLetras
+
+    Donde nPalabras es un número natural y mutarLetras es 1 o 0, si se quiere mutar letras aleatoriamente, respectivamente
+
+
+Ejemplo de uso: 
+    python3 combinar.py dicc10 100 0 1 | python3 separarPalabras.py dicc10 1 1 1
+
+En caso de no introducir los parametros en el orden adecuado o no introducirlos todos, el programa no funcionará como se espera.
