@@ -26,6 +26,11 @@ def leer_datos(fichero):
     global reserva_nTickets
 
     global nTickets_totales
+    global coste_minimo_encontrado
+    global estado_minimo
+
+    coste_minimo_encontrado = 1 << 31
+    estado_minimo = []
 
     nEstaciones = 0
     reserva_estacionInicial = []
@@ -143,10 +148,14 @@ def generar_hijos(k_anterior, estado_inicial):
 
             if heuristica_nodo < poda_nodo:              # Si la heurística es peor que el mejor nodo encontrado
                 generar_hijos(k, estado)
+                #None
             else:
-                print("Poda en el estado", estado, "con heurística", heuristica_nodo, "y poda", poda_nodo)
-                print("El mejor estado era", estado_minimo, "con coste", coste_minimo_encontrado)
-                print("---------------------------------")
+                #print("Poda en el estado", estado, "con heurística", heuristica_nodo, "y poda", poda_nodo)
+                #print("El mejor estado era", estado_minimo, "con coste", coste_minimo_encontrado)
+                #print("---------------------------------")
+                None
+
+            #generar_hijos(k, estado)
             
 
 def peek_line(f):
@@ -160,17 +169,18 @@ def peek_line(f):
 # para conseguir el estado solución que maximice los beneficios de la venta
 def main():
     
-    tiempo_init = time.time()
-
     if len(sys.argv) < 2:
         print("Llamar como python3 transporte.py <fichero_pruebas>")
         exit(1)
 
-    global tren_capacidad_maxima
     fichero = open(sys.argv[1], "r")
+    #fichero = open("p4/pruebas.txt", "r")
+
     output = open("resultados.txt", "w")  
 
     while peek_line(fichero) != "0 0 0" and peek_line(fichero) != "":    
+
+        tiempo_init = time.time()
         leer_datos(fichero)
 
         estado_inicial = [0] * nPedidos()
