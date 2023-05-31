@@ -1,23 +1,5 @@
 import sys
 import time
-import queue
-from dataclasses import dataclass, field
-from typing import Any
-
-@dataclass(order=True)
-class PrioritizedItem:
-    def __init__(self, priority, k, estado):
-        self.priority = priority
-        self.k = k
-        self.estado = estado
-        return
-    
-    priority: int
-    k: Any=field(compare=False)
-    estado: Any=field(compare=False)
-
-
-cola_nodos = queue.PriorityQueue()
 
 nEstaciones = 4
 tren_capacidad_maxima = 10
@@ -102,11 +84,10 @@ def poda ():
 # a mejores resultados en un momento de elección más próximo
 def heuristica (k, estado):
     valor = 0
-
-    for i in range(k+1):
+    for i in range(0, k+1):
         if estado[i] == 0:
             valor += reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
-
+    
     return valor
 
 
@@ -142,49 +123,34 @@ def acotador_2(estado_nuevo):
             return False
 
     return True
-
+    
 
 
 def generar_hijos(k_anterior, estado_inicial):
 
     global coste_minimo_encontrado
     global estado_minimo
-    global cola_nodos
 
-    terminar = False
+    for k in range(nPedidos()):
+        estado = estado_inicial.copy()
+        estado[k] = 1       # Añadimos el pedido k
 
-    while not terminar:
+        if acotador_1(k, k_anterior) and acotador_2(estado): # Si se cumplen las restricciones
 
-        nodo_terminal = True
+            coste_nodo = coste(estado)
+            
+            if coste_nodo < coste_minimo_encontrado:
+                coste_minimo_encontrado = coste_nodo
+                estado_minimo = estado
 
-        # Expande el nodo
-        for k in range(nPedidos()):
-            estado = estado_inicial.copy()
-            estado[k] = 1       # Añadimos el pedido k
+            heuristica_nodo = heuristica(k, estado)
+            poda_nodo = poda()
 
-            if acotador_1(k, k_anterior) and acotador_2(estado): # Si se cumplen las restricciones
-                
-                nodo_terminal = False
+            if heuristica_nodo < poda_nodo:              # Si la heurística es peor que el mejor nodo encontrado
+                generar_hijos(k, estado)
+                None
 
-                coste_nodo = coste(estado)
-                
-                if coste_nodo < coste_minimo_encontrado:
-                    coste_minimo_encontrado = coste_nodo
-                    estado_minimo = estado
-
-                heuristica_nodo = heuristica(k, estado)
-                poda_nodo = poda()
-
-                if heuristica_nodo < poda_nodo:              # Si la heurística es prometedora
-                    cola_nodos.put(PrioritizedItem(heuristica_nodo+coste_nodo, k, estado))
-
-        # Pasa al siguiente nodo a generar
-        nodo_nuevo = cola_nodos.get() # Elimina el nodo actual de la cola
-        k_anterior = nodo_nuevo.k
-        estado_inicial = nodo_nuevo.estado
-
-        if cola_nodos.empty():
-            terminar = True
+            #generar_hijos(k, estado)
             
 
 def peek_line(f):
@@ -198,12 +164,12 @@ def peek_line(f):
 # para conseguir el estado solución que maximice los beneficios de la venta
 def main():
     
-    #if len(sys.argv) < 2:
-    #    print("Llamar como python3 transporte.py <fichero_pruebas>")
-    #    exit(1)
+    if len(sys.argv) < 2:
+        print("Llamar como python3 transporte.py <fichero_pruebas>")
+        exit(1)
 
-    #fichero = open(sys.argv[1], "r")
-    fichero = open("p4/pruebas.txt", "r")
+    fichero = open(sys.argv[1], "r")
+    #fichero = open("p4/pruebas.txt", "r")
 
     output = open("resultados.txt", "w")  
 
