@@ -71,6 +71,17 @@ def leer_datos(fichero):
     for i in range(nPedidos):
         nTickets_totales += reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
 
+    if nEstaciones > 7:
+        print("El número de estaciones debe ser menor o igual que 7")
+        print("---------------------------------")
+        return False
+
+    if nPedidos > 22:
+        print("El número de pedidos debe ser menor o igual que 22")
+        print("---------------------------------")
+        return False
+        
+    return True
     
 
 
@@ -174,22 +185,26 @@ def main():
     output = open("resultados.txt", "w")  
 
     while peek_line(fichero) != "0 0 0" and peek_line(fichero) != "":    
+        
+        if leer_datos(fichero):
+            
+            tiempo_init = time.time()
 
-        tiempo_init = time.time()
-        leer_datos(fichero)
+            estado_inicial = [0] * nPedidos()
+            generar_hijos(-1, estado_inicial)
 
-        estado_inicial = [0] * nPedidos()
-        generar_hijos(-1, estado_inicial)
+            beneficio = nTickets_totales - coste_minimo_encontrado
 
-        beneficio = nTickets_totales - coste_minimo_encontrado
+            print("El estado con mayor beneficio es el", estado_minimo, "con un coste de", beneficio)
+            print("---------------------------------")
 
-        print("El estado con mayor beneficio es el", estado_minimo, "con un coste de", beneficio)
-        print("---------------------------------")
+            tiempo_end = time.time()
+            tiempo_total = (tiempo_end-tiempo_init)*1000
 
-        tiempo_end = time.time()
-        tiempo_total = (tiempo_end-tiempo_init)*1000
+            output.write(str(float(beneficio))+" "+str(tiempo_total)+"\n") 
 
-        output.write(str(float(beneficio))+" "+str(tiempo_total)+"\n") 
+    if peek_line(fichero) == "":
+        print("Falta 0 0 0 para finalizar correctamente la lectura del fichero pruebas.txt, el resultado puede ser no válido")
         
         
     fichero.close()

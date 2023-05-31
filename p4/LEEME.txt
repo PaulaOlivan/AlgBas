@@ -1,0 +1,37 @@
+Mateo Trejo, Hugo	816678@unizar.es	login en hendrix
+
+Oliván Usieto, Paula	771938@unizar.es	login en hendrix
+
+El programa está organizado en dos fichero los cuales resuelven los dos problemas planteados en el guión. Ambos funcionan de manera
+independiente y solo necesitan ser invocados con un argumento, el cual es el nombre del fichero donde están las pruebas; por defecto
+en el fichero de bash es pruebas.txt, aunque al ejecutarlo sin dicho script o modificandolo se podría usar otro fichero de texto con
+pruebas, siempre debe incluir .txt en el nombre.
+
+El primero de los ficheros resuelve el problema haciendo uso de la técnica de ramificación y poda, se debe invocar con:
+    - python3 transporte.py nombreFichero
+El segundo de los ficheros resuelve el problema haciendo uso de la técnica de programación lineal, lo invocaremos con:
+    - python3 transporte_pl.py nombreFichero
+Por último y de forma opcional se ha incluido un fichero que resuelve el problema con ramificación y poda, pero haciendo una búsqueda
+en profundidad en vez de guiar la búsqueda con los nodos con mejor heurística que permanecen vivos. Este programa se invoca con:
+    - python3 transporte_profundidad.py nombreFichero
+
+En caso de no introducir los parametros en el orden adecuado o no introducirlos todos, el programa no funcionará como se espera.
+
+A la hora de crear un fichero de pruebas distinto se debe tener en cuenta la sintaxis del fichero; este está ordenado por bloques,
+los cuales simbolizan distintos trenes, dentro de cada bloque están las solicitudes de billetes. Todo fichero debe finalizar con 0 0 0
+para que se sepa que no hay más trenes que organizar en el fichero. Cualquier linea del fichero de pruebas está compuesta por tres 
+naturales: 
+    - Inicio de bloque --> n m p
+        - n: simboliza la capacidad que tendrá el tren
+        - m: marca el número total de estaciones que habrá, como mucho podrá ser 7
+        - p: define el número de pedidos que tendrá ese bloque, será un máximo de 22
+    - Solicitud de pedido --> i f t
+        - i: simboliza la estación donde se comenzará el trayecto
+        - f: especifica la estación donde se bajaran los pasajeros, su destino
+        - t: es el número total de billetes que necesitarán
+
+Si alguno de los datos del bloque incumple las restricciones se mostrará un mensaje de error por pantalla y ese bloque será ignorado,
+esto también se da si el fichero no acaba con 0 0 0.
+
+Para repetir las pruebas, solo se deberá modificar el fichero pruebas.txt o invocar el programa con otro txt; se debe tener en cuenta
+que el fichero resultados.txt será sobreescrito.
