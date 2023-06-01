@@ -2,7 +2,7 @@ Mateo Trejo, Hugo	816678@unizar.es	login en hendrix
 
 Oliván Usieto, Paula	771938@unizar.es	login en hendrix
 
-El programa está organizado en dos fichero los cuales resuelven los dos problemas planteados en el guión. Ambos funcionan de manera
+El programa está organizado en tres fichero los cuales resuelven los dos problemas planteados en el guión. Todos funcionan de manera
 independiente y solo necesitan ser invocados con un argumento, el cual es el nombre del fichero donde están las pruebas; por defecto
 en el fichero de bash es pruebas.txt, aunque al ejecutarlo sin dicho script o modificandolo se podría usar otro fichero de texto con
 pruebas, siempre debe incluir .txt en el nombre.
@@ -15,7 +15,11 @@ Por último y de forma opcional se ha incluido un fichero que resuelve el proble
 en profundidad en vez de guiar la búsqueda con los nodos con mejor heurística que permanecen vivos. Este programa se invoca con:
     - python3 transporte_profundidad.py nombreFichero
 
-En caso de no introducir los parametros en el orden adecuado o no introducirlos todos, el programa no funcionará como se espera.
+En caso de no introducir los parametros en el orden adecuado o no introducirlos todos, el programa no funcionará como se espera. Para 
+poder hacer uso correcto del archivo de programación lineal será necesario tener instalado el paquete pulp, el cual se puede instalar
+con el comando:
+    - pip install pulp
+Esta librería está creada para funcionar en Python y resolver problemas de optimización como el que se plantea en el guión.
 
 A la hora de crear un fichero de pruebas distinto se debe tener en cuenta la sintaxis del fichero; este está ordenado por bloques,
 los cuales simbolizan distintos trenes, dentro de cada bloque están las solicitudes de billetes. Todo fichero debe finalizar con 0 0 0
@@ -31,7 +35,17 @@ naturales:
         - t: es el número total de billetes que necesitarán
 
 Si alguno de los datos del bloque incumple las restricciones se mostrará un mensaje de error por pantalla y ese bloque será ignorado,
-esto también se da si el fichero no acaba con 0 0 0.
+también se mostrará un error da si el fichero no acaba con 0 0 0.
 
 Para repetir las pruebas, solo se deberá modificar el fichero pruebas.txt o invocar el programa con otro txt; se debe tener en cuenta
-que el fichero resultados.txt será sobreescrito.
+que el fichero resultados.txt y resultados_pl.txt serán sobreescritos. Para lanzar las pruebas de manera autómatica se ha creado un
+script de bash, el cual se invoca con:
+    - ./ejecutar.sh
+Este lanzará el fichero de pruebas con las tres versiones del programa y guardará los resultados en los ficheros de resultados.
+
+Se han incluido además dos ficheros de pruebas extras, los cuales son: errores.txt y rendimiento.txt. El primero de ellos contiene
+pruebas que no cumplen las restricciones del problema, por lo que se deberían mostrar mensajes de error por pantalla. El segundo de ellos
+contiene pruebas que se han usado para medir el rendimiento de los programas y poder realizar su analisis en la memoria, se incluye también
+por si se quieren comparar estos resultados con los obtenidos en otros ordenadores. Ambos comandos para invocar los ficheros con estos txt
+están comentados en el script de bash, pero pueden ser descomentados eliminando el # que aparece delante de las líneas.
+
