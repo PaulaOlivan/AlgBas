@@ -1,7 +1,24 @@
 import sys
 import time
+import queue
 
-# Definimos las variables globales que vamos a utilizar para almacenar datos
+# Definimos la clase de cola con prioridades para recorrer los nodos según el
+# valor de la heurística de cada uno.
+class PrioritizedItem:
+    def __init__(self, priority, k, estado):
+        self.priority = priority
+        self.k = k
+        self.estado = estado
+
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+    def __eq__(self, other):
+        return self.priority == other.priority
+
+
+cola_nodos = queue.PriorityQueue()
+
 nEstaciones = 4
 tren_capacidad_maxima = 10
 
@@ -12,7 +29,7 @@ reserva_nTickets = []
 def nPedidos():
     return len(reserva_nTickets)
 
-# Variables para almacenar los datos resultado que se mostrarán como solución
+
 coste_minimo_encontrado = 1 << 31
 estado_minimo = []
 
@@ -72,44 +89,40 @@ def leer_datos(fichero):
 
     nTickets_totales = 0
 
-    # Calculamos el número total de tickets que se van a vender
     for i in range(nPedidos):
         nTickets_totales += reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
 
-    # Mostramos error en el bloque si incumple la limitación de 7 estaciones.
+    # Mostramos error en el bloque si incumple la regla de tener un máximo de 7 pedidos.
     if nEstaciones > 7:
-        print("El número de estaciones debe ser menor o igual que 7, es", nEstaciones)
+        print("El número de estaciones debe ser menor o igual que 7")
         print("---------------------------------")
         return False
 
-    # Mostramos error en el bloque si incumple la limitación de 22 pedidos.
+    # Si el número de pedidos es mayor que 22, se elimina ese bloque de pedidos
     if nPedidos > 22:
-        print("El número de pedidos debe ser menor o igual que 22, es ", nPedidos)
+        print("El número de pedidos debe ser menor o igual que 22")
         print("---------------------------------")
         return False
         
     return True
-    
-
 
 # Función asociada a ĉ para eliminar ramas del mapa de estados que no sean
 # posibles soluciones mejores a la rama actual
 def poda ():
     return coste_minimo_encontrado
 
-
 # Función asociada a ĉ para elegir cual de las ramas a explorar nos va a llevar
 # a mejores resultados en un momento de elección más próximo
 def heuristica (k, estado):
     valor = 0
-    for i in range(0, k+1):
+
+    for i in range(k+1):
         if estado[i] == 0:
             valor += reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
-    
+
     return valor
 
-# Función asociada a c para calcular el coste real de un estado. En este caso
-# el coste es el número de tickets que nos hemos dejado por coger.
+# Función asociada a c para calcular el coste de un estado del espacio de estados
 def coste (estado):
 
     valor = nTickets_totales
@@ -119,12 +132,9 @@ def coste (estado):
 
     return valor # Tickets que nos hemos dejado por coger
 
-
-
 # Devuelve true si el estado es solución, elimina nodos repetidos
 def acotador_1(indice_nuevo, indice_anterior):
     return indice_nuevo > indice_anterior
-
 
 # Devuelve true si el estado es solucion, limita la capacidad del tren
 def acotador_2(estado_nuevo):
@@ -142,38 +152,47 @@ def acotador_2(estado_nuevo):
             return False
 
     return True
-    
 
-# Función que genera los hijos de un nodo en caso de que el nodo esté vivo y
-# se quiera expandir. En este caso, los hijos son los estados que se obtienen
-# al añadir un pedido nuevo al estado actual.
+
+# Función que genera los hijos de un nodo y los añade a la cola de nodos.
+# El nodo a expandir deberá estar en la cola de nodos vivos.
 def generar_hijos(k_anterior, estado_inicial):
 
     global coste_minimo_encontrado
     global estado_minimo
+    global cola_nodos
 
-    for k in range(nPedidos()):
-        estado = estado_inicial.copy()
-        estado[k] = 1       # Añadimos el pedido k
+    terminar = False
 
-        # Si se cumplen las restricciones
-        if acotador_1(k, k_anterior) and acotador_2(estado): 
+    while not terminar:
+        # Expande el nodo
+        for k in range(nPedidos()):
+            estado = estado_inicial.copy()
+            estado[k] = 1       # Añadimos el pedido k
 
-            coste_nodo = coste(estado)
-            
-            if coste_nodo < coste_minimo_encontrado:
-                coste_minimo_encontrado = coste_nodo
-                estado_minimo = estado
+            # Si se cumplen las restricciones, se mira si es posible solución
+            if acotador_1(k, k_anterior) and acotador_2(estado): 
+                
+                coste_nodo = coste(estado)
+                
+                if coste_nodo < coste_minimo_encontrado:
+                    coste_minimo_encontrado = coste_nodo
+                    estado_minimo = estado
 
-            heuristica_nodo = heuristica(k, estado)
-            poda_nodo = poda()
+                heuristica_nodo = heuristica(k, estado)
+                poda_nodo = poda()
 
-            # Si la heurística es peor que el mejor nodo encontrado
-            if heuristica_nodo < poda_nodo:  
-                generar_hijos(k, estado)
-                None
+                # Si la heurística es prometedora, se añade a la cola de nodos
+                if heuristica_nodo < poda_nodo:              
+                    cola_nodos.put(PrioritizedItem(heuristica_nodo, k, estado))
 
-            #generar_hijos(k, estado)
+        if cola_nodos.empty():
+            terminar = True
+        else:
+            # Pasa al siguiente nodo a generar
+            nodo_nuevo = cola_nodos.get() # Elimina el nodo actual de la cola
+            k_anterior = nodo_nuevo.k
+            estado_inicial = nodo_nuevo.estado
             
 
 def peek_line(f):
@@ -187,6 +206,8 @@ def peek_line(f):
 # para conseguir el estado solución que maximice los beneficios de la venta
 def main():
     
+    # Comprueba que se ha llamado al programa con el fichero de entrada 
+    # como argumento
     if len(sys.argv) < 2:
         print("Llamar como python3 transporte.py <fichero_pruebas>")
         exit(1)
@@ -194,8 +215,9 @@ def main():
     fichero = open(sys.argv[1], "r")
     #fichero = open("p4/pruebas.txt", "r")
 
-    output = open("resultados_profundidad.txt", "w")  
+    output = open("resultados.txt", "w")  
 
+    # Lee los datos del fichero de entrada y los almacena en las variables globales
     while peek_line(fichero) != "0 0 0" and peek_line(fichero) != "":    
         
         if leer_datos(fichero):
@@ -206,8 +228,8 @@ def main():
             generar_hijos(-1, estado_inicial)
 
             beneficio = nTickets_totales - coste_minimo_encontrado
-
-            # Recuperamos los distintos datos resultado obtenidos (beneficio y tiempo)
+            
+            # Imprime el resultado por pantalla y lo escribe en el fichero de salida resultados.txt
             print("El estado con mayor beneficio es el", estado_minimo, "con un coste de", beneficio)
             print("---------------------------------")
 
@@ -216,8 +238,7 @@ def main():
 
             output.write(str(float(beneficio))+" "+str(tiempo_total)+"\n") 
 
-    # Mostramos el mensaje de error si no se ha encontrado el final del fichero
-    # ya que puede resultar en algún resultado incorrecto.
+    # Si el fichero no acaba en 0 0 0, se avisa de que el resultado puede ser no válido.
     if peek_line(fichero) == "":
         print("Falta 0 0 0 para finalizar correctamente la lectura del fichero pruebas.txt, el resultado puede ser no válido")
         
