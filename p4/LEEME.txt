@@ -49,3 +49,7 @@ contiene pruebas que se han usado para medir el rendimiento de los programas y p
 por si se quieren comparar estos resultados con los obtenidos en otros ordenadores. Ambos comandos para invocar los ficheros con estos txt
 están comentados en el script de bash, pero pueden ser descomentados eliminando el # que aparece delante de las líneas.
 
+Durante las pruebas de la memoria y para llevar los algoritmos un poco más al máximo se creo el fichero rendimiento_ampliado.txt, el cual
+contiene pruebas con más estaciones y pedidos de los permitidos en el guión. Debido a esto, el fichero no se incluye en el script de bash
+y tampoco podrá ser usado directamente, ya que para ello sería necesario modificar las restricciones del problema en el código.
+

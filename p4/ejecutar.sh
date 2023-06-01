@@ -16,7 +16,7 @@ if [ $# -eq 0 ];
 then
 
     # Probamos el programa con los datos de prueba
-    echo "Lanzamos el programa para probar los datos de pruebas.txt"
+    echo "Lanzamos el programa para probar los datos de pruebas.txt con ramificación y poda"
     python3 transporte.py pruebas.txt
 
     # Probamos el programa con los datos en prueba en PL
@@ -24,8 +24,8 @@ then
     python3 transporte_pl.py pruebas.txt
 
     # Probamos el programa con los datos de prueba en profundidad 
-    #echo "Lanzamos el programa para probar los datos de pruebas.txt en profundidad"
-    #python3 transporte_profundidad.py pruebas.txt
+    echo "Lanzamos el programa para probar los datos de pruebas.txt con búsqueda en profundidad, añadido como extra"
+    python3 transporte_profundidad.py pruebas.txt
 
 
     # Probamos el programa con los datos incorrectos para comprobar los casos 
