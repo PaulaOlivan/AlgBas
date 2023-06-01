@@ -32,6 +32,8 @@ then
     # de error
     #echo "Lanzamos el programa para probar las pruebas de error de errores.txt"
     #python3 transporte.py errores.txt
+    #python3 transporte_pl.py errores.txt
+    #python3 transporte_profundidad.py errores.txt
 
     # Probamos el programa con los datos de rendimeinto para comprobar la eficiencia 
     # de nuestros programas
