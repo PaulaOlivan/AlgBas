@@ -24,6 +24,13 @@ then
     #echo "Lanzamos el programa para probar las pruebas de error de errores.txt"
     #python3 transporte.py pruebas.txt
 
+    # Probamos el programa con los datos de rendimeinto para comprobar la eficiencia 
+    # de nuestros programas
+    #echo "Lanzamos el programa para probar las pruebas de rendimiento de rendimiento.txt"
+    #python3 transporte.py rendimiento.txt
+    #python3 transporte_pl.py rendimiento.txt
+    #python3 transporte_profundidad.py rendimiento.txt
+
     # Probamos el programa con los datos en prueba en PL
     echo "Lanzamos el programa para probar los datos de pruebas.txt con PL"
     python3 transporte_pl.py pruebas.txt
