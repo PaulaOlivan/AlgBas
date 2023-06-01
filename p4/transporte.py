@@ -2,6 +2,8 @@ import sys
 import time
 import queue
 
+# Definimos la clase de cola con prioridades para recorrer los nodos según el
+# valor de la heurística de cada uno.
 class PrioritizedItem:
     def __init__(self, priority, k, estado):
         self.priority = priority
@@ -31,7 +33,8 @@ def nPedidos():
 coste_minimo_encontrado = 1 << 31
 estado_minimo = []
 
-
+# Función para leer los datos de un fichero de entrada y almacenarlos en las
+# variables globales
 def leer_datos(fichero):
     
     global nEstaciones
@@ -64,7 +67,9 @@ def leer_datos(fichero):
     nEstaciones = int(split_linea[1])
     nPedidos = int(split_linea[2])
 
-
+    # Mostramos error en el bloque si incumple la regla de acabar con 000.
+    # Y analizamos el resto de pedidos del bloque para generar los distintos
+    # nodos que se van a recorrer.
     for i in range(nPedidos):
         linea = fichero.readline()
 
@@ -87,11 +92,13 @@ def leer_datos(fichero):
     for i in range(nPedidos):
         nTickets_totales += reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
 
+    # Mostramos error en el bloque si incumple la regla de tener un máximo de 7 pedidos.
     if nEstaciones > 7:
         print("El número de estaciones debe ser menor o igual que 7")
         print("---------------------------------")
         return False
 
+    # Si el número de pedidos es mayor que 22, se elimina ese bloque de pedidos
     if nPedidos > 22:
         print("El número de pedidos debe ser menor o igual que 22")
         print("---------------------------------")
@@ -99,14 +106,10 @@ def leer_datos(fichero):
         
     return True
 
-    
-
-
 # Función asociada a ĉ para eliminar ramas del mapa de estados que no sean
 # posibles soluciones mejores a la rama actual
 def poda ():
     return coste_minimo_encontrado
-
 
 # Función asociada a ĉ para elegir cual de las ramas a explorar nos va a llevar
 # a mejores resultados en un momento de elección más próximo
@@ -119,7 +122,7 @@ def heuristica (k, estado):
 
     return valor
 
-
+# Función asociada a c para calcular el coste de un estado del espacio de estados
 def coste (estado):
 
     valor = nTickets_totales
@@ -129,12 +132,9 @@ def coste (estado):
 
     return valor # Tickets que nos hemos dejado por coger
 
-
-
 # Devuelve true si el estado es solución, elimina nodos repetidos
 def acotador_1(indice_nuevo, indice_anterior):
     return indice_nuevo > indice_anterior
-
 
 # Devuelve true si el estado es solucion, limita la capacidad del tren
 def acotador_2(estado_nuevo):
