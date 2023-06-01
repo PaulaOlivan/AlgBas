@@ -7,8 +7,8 @@ independiente y solo necesitan ser invocados con un argumento, el cual es el nom
 en el fichero de bash es pruebas.txt, aunque al ejecutarlo sin dicho script o modificandolo se podría usar otro fichero de texto con
 pruebas, siempre debe incluir .txt en el nombre.
 
-El primero de los ficheros resuelve el problema haciendo uso de la técnica de ramificación y poda, 
-con exploración tipo A* (anchura guiada por heurística), se debe invocar con:
+El primero de los ficheros resuelve el problema haciendo uso de la técnica de ramificación y poda, con exploración tipo A* (anchura 
+guiada por heurística), se debe invocar con:
     - python3 transporte.py nombreFichero
 
 El segundo de los ficheros resuelve el problema haciendo uso de la técnica de programación lineal, lo invocaremos con:
@@ -49,12 +49,12 @@ Este lanzará el fichero de pruebas con las tres versiones del programa y guarda
 
 Se han incluido además dos ficheros de pruebas extras, los cuales son: errores.txt y rendimiento.txt. El primero de ellos contiene
 pruebas que no cumplen las restricciones del problema, por lo que se mostrarán mensajes de error por pantalla. El segundo de ellos
-contiene pruebas que se han usado para medir el rendimiento de los programas. Ambos comandos para invocar los ficheros con estos txt
+contiene pruebas que se han usado para medir el rendimiento de los programas y poder realizar su analisis en la memoria, se incluye también
+por si se quieren comparar estos resultados con los obtenidos en otros ordenadores. Ambos comandos para invocar los ficheros con estos txt
 están comentados en el script de bash, pero pueden ser descomentados eliminando el # que aparece delante de las líneas.
 
-Además se incluye el fichero rendimiento_ampliado.txt, el cual
-contiene pruebas con más estaciones y pedidos de los permitidos en el guión. 
-Estas pruebas de rendimiento son las que se muestran en la memoria.
-Debido a esto que no cumplen las restricciones máximas, el fichero no se incluye en el script de bash
-y tampoco podrá ser usado directamente, ya que para ello sería necesario modificar las restricciones del problema en el código.
+Además se incluye el fichero rendimiento_ampliado.txt, el cual contiene pruebas con más estaciones y pedidos de los permitidos en el 
+guión. Estas pruebas de rendimiento son las que se muestran en la memoria. Debido a esto que no cumplen las restricciones máximas, 
+el fichero no se incluye en el script de bash y tampoco podrá ser usado directamente, ya que para ello sería necesario modificar las 
+restricciones del problema en el código.
 

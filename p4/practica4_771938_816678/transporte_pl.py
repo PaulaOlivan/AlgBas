@@ -169,6 +169,7 @@ def main():
 
             output.write(str(float(mayor_beneficio_encontrado))+" "+str(tiempo_total)+"\n") 
 
+    # Si el fichero no acaba en 0 0 0, se avisa de que el resultado puede ser no válido.
     if peek_line(fichero) == "":
         print("Falta 0 0 0 para finalizar correctamente la lectura del fichero pruebas.txt, el resultado puede ser no válido")
         

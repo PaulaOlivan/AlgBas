@@ -10,6 +10,7 @@ chmod +x transporte_pl.py
 chmod +x transporte_profundidad.py
 chmod +r pruebas.txt
 chmod +r errores.txt
+chmod +r rendimiento.txt
 
 # Ejecutar el programa si no se proporcionan argumentos al script
 if [ $# -eq 0 ]; 
