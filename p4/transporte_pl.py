@@ -109,7 +109,6 @@ def resolver_problema():
 
     # Creamos las variables necesarias para tomar las decisiones a la hora de
     # movernos entre los nodos solución
-
     x = [LpVariable(f"x{i}", cat='Binary') for i in range(nPedidos())]
 
 
