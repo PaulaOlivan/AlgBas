@@ -94,13 +94,13 @@ def leer_datos(fichero):
 
     # Mostramos error en el bloque si incumple la regla de tener un máximo de 7 pedidos.
     if nEstaciones > 7:
-        print("El número de estaciones debe ser menor o igual que 7")
+        print("El número de estaciones debe ser menor o igual que 7, es", nEstaciones)
         print("---------------------------------")
         return False
 
     # Si el número de pedidos es mayor que 22, se elimina ese bloque de pedidos
     if nPedidos > 22:
-        print("El número de pedidos debe ser menor o igual que 22")
+        print("El número de pedidos debe ser menor o igual que 22, es ", nPedidos)
         print("---------------------------------")
         return False
         
@@ -215,7 +215,7 @@ def main():
     fichero = open(sys.argv[1], "r")
     #fichero = open("p4/pruebas.txt", "r")
 
-    output = open("resultados.txt", "w")  
+    output = open("resultados_Aestrella.txt", "w")  
 
     # Lee los datos del fichero de entrada y los almacena en las variables globales
     while peek_line(fichero) != "0 0 0" and peek_line(fichero) != "":    
