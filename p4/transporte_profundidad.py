@@ -1,6 +1,7 @@
 import sys
 import time
 
+# Definimos las variables globales que vamos a utilizar para almacenar datos
 nEstaciones = 4
 tren_capacidad_maxima = 10
 
@@ -11,11 +12,12 @@ reserva_nTickets = []
 def nPedidos():
     return len(reserva_nTickets)
 
-
+# Variables para almacenar los datos resultado que se mostrarán como solución
 coste_minimo_encontrado = 1 << 31
 estado_minimo = []
 
-
+# Función para leer los datos de un fichero de entrada y almacenarlos en las
+# variables globales
 def leer_datos(fichero):
     
     global nEstaciones
@@ -48,7 +50,9 @@ def leer_datos(fichero):
     nEstaciones = int(split_linea[1])
     nPedidos = int(split_linea[2])
 
-
+    # Mostramos error en el bloque si incumple la regla de acabar con 000.
+    # Y analizamos el resto de pedidos del bloque para generar los distintos
+    # nodos que se van a recorrer.
     for i in range(nPedidos):
         linea = fichero.readline()
 
@@ -68,14 +72,17 @@ def leer_datos(fichero):
 
     nTickets_totales = 0
 
+    # Calculamos el número total de tickets que se van a vender
     for i in range(nPedidos):
         nTickets_totales += reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
 
+    # Mostramos error en el bloque si incumple la limitación de 7 estaciones.
     if nEstaciones > 7:
         print("El número de estaciones debe ser menor o igual que 7")
         print("---------------------------------")
         return False
 
+    # Mostramos error en el bloque si incumple la limitación de 22 pedidos.
     if nPedidos > 22:
         print("El número de pedidos debe ser menor o igual que 22")
         print("---------------------------------")
@@ -101,7 +108,8 @@ def heuristica (k, estado):
     
     return valor
 
-
+# Función asociada a c para calcular el coste real de un estado. En este caso
+# el coste es el número de tickets que nos hemos dejado por coger.
 def coste (estado):
 
     valor = nTickets_totales
@@ -136,7 +144,9 @@ def acotador_2(estado_nuevo):
     return True
     
 
-
+# Función que genera los hijos de un nodo en caso de que el nodo esté vivo y
+# se quiera expandir. En este caso, los hijos son los estados que se obtienen
+# al añadir un pedido nuevo al estado actual.
 def generar_hijos(k_anterior, estado_inicial):
 
     global coste_minimo_encontrado
@@ -146,7 +156,8 @@ def generar_hijos(k_anterior, estado_inicial):
         estado = estado_inicial.copy()
         estado[k] = 1       # Añadimos el pedido k
 
-        if acotador_1(k, k_anterior) and acotador_2(estado): # Si se cumplen las restricciones
+        # Si se cumplen las restricciones
+        if acotador_1(k, k_anterior) and acotador_2(estado): 
 
             coste_nodo = coste(estado)
             
@@ -157,7 +168,8 @@ def generar_hijos(k_anterior, estado_inicial):
             heuristica_nodo = heuristica(k, estado)
             poda_nodo = poda()
 
-            if heuristica_nodo < poda_nodo:              # Si la heurística es peor que el mejor nodo encontrado
+            # Si la heurística es peor que el mejor nodo encontrado
+            if heuristica_nodo < poda_nodo:  
                 generar_hijos(k, estado)
                 None
 
@@ -195,6 +207,7 @@ def main():
 
             beneficio = nTickets_totales - coste_minimo_encontrado
 
+            # Recuperamos los distintos datos resultado obtenidos (beneficio y tiempo)
             print("El estado con mayor beneficio es el", estado_minimo, "con un coste de", beneficio)
             print("---------------------------------")
 
@@ -203,6 +216,8 @@ def main():
 
             output.write(str(float(beneficio))+" "+str(tiempo_total)+"\n") 
 
+    # Mostramos el mensaje de error si no se ha encontrado el final del fichero
+    # ya que puede resultar en algún resultado incorrecto.
     if peek_line(fichero) == "":
         print("Falta 0 0 0 para finalizar correctamente la lectura del fichero pruebas.txt, el resultado puede ser no válido")
         

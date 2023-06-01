@@ -3,7 +3,7 @@ import time
 
 from pulp import *
 
-
+# Variables para almacenar los datos de entrada de los pedidos
 reserva_estacionInicial = []
 reserva_estacionFinal = []
 reserva_nTickets = []
@@ -11,7 +11,7 @@ reserva_nTickets = []
 def nPedidos():
     return len(reserva_nTickets)
 
-
+# Variables para almacenar los datos resultado que se mostrarán
 mayor_beneficio_encontrado = 0
 estado_mejor = []
 
@@ -19,6 +19,7 @@ estado_mejor = []
 
 def leer_datos(fichero):
     
+    # Creamos todas las variables necesarias para leer datos y resolver bloques
     global nEstaciones
     global tren_capacidad_maxima
 
@@ -49,7 +50,9 @@ def leer_datos(fichero):
     nEstaciones = int(split_linea[1])
     nPedidos = int(split_linea[2])
 
-
+    # Mostramos error en el bloque si incumple la limitación de 1000 tickets 
+    # maximo. Y analizamos el resto de bloques para generar los distintos 
+    # poblemas que se van a resolver
     for i in range(nPedidos):
         linea = fichero.readline()
 
@@ -69,14 +72,17 @@ def leer_datos(fichero):
 
     nTickets_totales = 0
 
+    # Calculamos el número de tickets totales que se pueden vender
     for i in range(nPedidos):
         nTickets_totales += reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
 
+    # Mostramos error en el bloque si incumple la limitación de 7 estaciones maximo
     if nEstaciones > 7:
         print("El número de estaciones debe ser menor o igual que 7")
         print("---------------------------------")
         return False
 
+    # Mostramos error en el bloque si incumple la limitación de 22 pedidos maximo
     if nPedidos > 22:
         print("El número de pedidos debe ser menor o igual que 22")
         print("---------------------------------")
@@ -84,7 +90,7 @@ def leer_datos(fichero):
         
     return True
 
-
+# Función para calcular el coste de un pedido
 def coste_reserva(i):
     return reserva_nTickets[i]*(reserva_estacionFinal[i]-reserva_estacionInicial[i])
 
@@ -92,6 +98,7 @@ def debugging(val):
     print("value:", val)
     return val
 
+# Función que resuelve el problema de PL con los datos obtenidos
 def resolver_problema():
 
     global mayor_beneficio_encontrado
@@ -123,10 +130,6 @@ def resolver_problema():
     # Obtenemos el resultado que hemos conseguido
     mayor_beneficio_encontrado = value(prob.objective)
     estado_mejor = [x[i].value() for i in range(nPedidos())]
-
-    
-
-
 
 
 def peek_line(f):

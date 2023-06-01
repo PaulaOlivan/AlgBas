@@ -154,7 +154,8 @@ def acotador_2(estado_nuevo):
     return True
 
 
-
+# Función que genera los hijos de un nodo y los añade a la cola de nodos.
+# El nodo a expandir deberá estar en la cola de nodos vivos.
 def generar_hijos(k_anterior, estado_inicial):
 
     global coste_minimo_encontrado
@@ -169,7 +170,8 @@ def generar_hijos(k_anterior, estado_inicial):
             estado = estado_inicial.copy()
             estado[k] = 1       # Añadimos el pedido k
 
-            if acotador_1(k, k_anterior) and acotador_2(estado): # Si se cumplen las restricciones
+            # Si se cumplen las restricciones, se mira si es posible solución
+            if acotador_1(k, k_anterior) and acotador_2(estado): 
                 
                 coste_nodo = coste(estado)
                 
@@ -180,7 +182,8 @@ def generar_hijos(k_anterior, estado_inicial):
                 heuristica_nodo = heuristica(k, estado)
                 poda_nodo = poda()
 
-                if heuristica_nodo < poda_nodo:              # Si la heurística es prometedora
+                # Si la heurística es prometedora, se añade a la cola de nodos
+                if heuristica_nodo < poda_nodo:              
                     cola_nodos.put(PrioritizedItem(heuristica_nodo, k, estado))
 
         if cola_nodos.empty():
@@ -203,6 +206,8 @@ def peek_line(f):
 # para conseguir el estado solución que maximice los beneficios de la venta
 def main():
     
+    # Comprueba que se ha llamado al programa con el fichero de entrada 
+    # como argumento
     if len(sys.argv) < 2:
         print("Llamar como python3 transporte.py <fichero_pruebas>")
         exit(1)
@@ -212,6 +217,7 @@ def main():
 
     output = open("resultados.txt", "w")  
 
+    # Lee los datos del fichero de entrada y los almacena en las variables globales
     while peek_line(fichero) != "0 0 0" and peek_line(fichero) != "":    
         
         if leer_datos(fichero):
@@ -222,7 +228,8 @@ def main():
             generar_hijos(-1, estado_inicial)
 
             beneficio = nTickets_totales - coste_minimo_encontrado
-
+            
+            # Imprime el resultado por pantalla y lo escribe en el fichero de salida resultados.txt
             print("El estado con mayor beneficio es el", estado_minimo, "con un coste de", beneficio)
             print("---------------------------------")
 
@@ -231,6 +238,7 @@ def main():
 
             output.write(str(float(beneficio))+" "+str(tiempo_total)+"\n") 
 
+    # Si el fichero no acaba en 0 0 0, se avisa de que el resultado puede ser no válido.
     if peek_line(fichero) == "":
         print("Falta 0 0 0 para finalizar correctamente la lectura del fichero pruebas.txt, el resultado puede ser no válido")
         
