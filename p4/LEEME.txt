@@ -2,18 +2,22 @@ Mateo Trejo, Hugo	816678@unizar.es	login en hendrix
 
 Oliván Usieto, Paula	771938@unizar.es	login en hendrix
 
-El programa está organizado en tres fichero los cuales resuelven los dos problemas planteados en el guión. Todos funcionan de manera
+El programa está organizado en tres ficheros los cuales resuelven los dos problemas planteados en el guión. Todos funcionan de manera
 independiente y solo necesitan ser invocados con un argumento, el cual es el nombre del fichero donde están las pruebas; por defecto
 en el fichero de bash es pruebas.txt, aunque al ejecutarlo sin dicho script o modificandolo se podría usar otro fichero de texto con
 pruebas, siempre debe incluir .txt en el nombre.
 
-El primero de los ficheros resuelve el problema haciendo uso de la técnica de ramificación y poda, se debe invocar con:
+El primero de los ficheros resuelve el problema haciendo uso de la técnica de ramificación y poda, 
+con exploración tipo A* (anchura guiada por heurística), se debe invocar con:
     - python3 transporte.py nombreFichero
+
 El segundo de los ficheros resuelve el problema haciendo uso de la técnica de programación lineal, lo invocaremos con:
     - python3 transporte_pl.py nombreFichero
+
 Por último y de forma opcional se ha incluido un fichero que resuelve el problema con ramificación y poda, pero haciendo una búsqueda
 en profundidad en vez de guiar la búsqueda con los nodos con mejor heurística que permanecen vivos. Este programa se invoca con:
     - python3 transporte_profundidad.py nombreFichero
+
 
 En caso de no introducir los parametros en el orden adecuado o no introducirlos todos, el programa no funcionará como se espera. Para 
 poder hacer uso correcto del archivo de programación lineal será necesario tener instalado el paquete pulp, el cual se puede instalar
@@ -44,8 +48,10 @@ script de bash, el cual se invoca con:
 Este lanzará el fichero de pruebas con las tres versiones del programa y guardará los resultados en los ficheros de resultados.
 
 Se han incluido además dos ficheros de pruebas extras, los cuales son: errores.txt y rendimiento.txt. El primero de ellos contiene
-pruebas que no cumplen las restricciones del problema, por lo que se deberían mostrar mensajes de error por pantalla. El segundo de ellos
-contiene pruebas que se han usado para medir el rendimiento de los programas y poder realizar su analisis en la memoria, se incluye también
-por si se quieren comparar estos resultados con los obtenidos en otros ordenadores. Ambos comandos para invocar los ficheros con estos txt
+pruebas que no cumplen las restricciones del problema, por lo que se mostrarán mensajes de error por pantalla. El segundo de ellos
+contiene pruebas que se han usado para medir el rendimiento de los programas. Ambos comandos para invocar los ficheros con estos txt
 están comentados en el script de bash, pero pueden ser descomentados eliminando el # que aparece delante de las líneas.
+
+Además, el fichero rendimiento_ampliado contiene pruebas de rendimiento que sobrepasan las restricciones de 22 pedidos y 7 estaciones.
+Se incluyen porque son las que se han usado para la memoria. 
 
